@@ -19,7 +19,6 @@
 * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 * THE SOFTWARE.
 */
-
 using System;
 using System.IO;
 using System.Runtime.InteropServices;
@@ -953,12 +952,19 @@ namespace Assimp
         /// <param name="data">Array to store the copied data</param>
         /// <param name="startIndexInArray">Zero-based element index to start writing data to in the element array.</param>
         /// <param name="count">Number of elements to copy</param>
+#if !NET462
         public static unsafe void Read<T>(IntPtr pSrc, T[] data, int startIndexInArray, int count) where T : struct
         {
             ReadOnlySpan<T> src = new ReadOnlySpan<T>(pSrc.ToPointer(), count);
             Span<T> dst = new Span<T>(data, startIndexInArray, count);
             src.CopyTo(dst);
         }
+#else
+        public static unsafe void Read<T>(IntPtr pSrc, T[] data, int startIndexInArray, int count) where T : struct
+        {
+            MemoryInterop.ReadArrayUnaligned<T>(pSrc, data, startIndexInArray, count);
+        }
+#endif
 
         /// <summary>
         /// Reads a single element from the memory location.
@@ -990,12 +996,19 @@ namespace Assimp
         /// <param name="data">Array containing data to write</param>
         /// <param name="startIndexInArray">Zero-based element index to start reading data from in the element array.</param>
         /// <param name="count">Number of elements to copy</param>
+#if !NET462
         public static unsafe void Write<T>(IntPtr pDest, T[] data, int startIndexInArray, int count) where T : struct
         {
             ReadOnlySpan<T> src = new ReadOnlySpan<T>(data, startIndexInArray, count);
             Span<T> dst = new Span<T>(pDest.ToPointer(), count);
             src.CopyTo(dst);
         }
+#else
+        public static unsafe void Write<T>(IntPtr pDest, T[] data, int startIndexInArray, int count) where T : struct
+        {
+            MemoryInterop.WriteArrayUnaligned<T>(pDest, data, startIndexInArray, count);
+        }
+#endif
 
         /// <summary>
         /// Writes a single element to the memory location.
@@ -1008,7 +1021,7 @@ namespace Assimp
             Unsafe.WriteUnaligned<T>(pDest.ToPointer(), data);
         }
 
-        #endregion
+#endregion
 
         #region Misc
 

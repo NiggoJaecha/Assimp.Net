@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net6.0;net7.0;netstandard2.1</TargetFrameworks>
+    <TargetFrameworks>net6.0;net7.0;netstandard2.1;net462</TargetFrameworks>
     <LangVersion>11</LangVersion>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
@@ -52,10 +52,14 @@
   </Target>
 
   <ItemGroup>
-    <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="6.0.0" />
+    <PackageReference Include="MemoryInterop.ILPatcher" Version="2.2.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="StirlingLabs.assimp.native.linux-x64" Version="*" />
     <PackageReference Include="StirlingLabs.assimp.native.osx" Version="*" />
     <PackageReference Include="StirlingLabs.assimp.native.win-x64" Version="*" />
+    <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="6.0.0" />
   </ItemGroup>
   
   <ItemGroup Condition="$(TargetFramework.StartsWith('netstandard'))">

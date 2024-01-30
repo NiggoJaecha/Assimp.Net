@@ -28,7 +28,9 @@ using System.Runtime.InteropServices;
 
 namespace Assimp.Unmanaged
 {
+#if !NET462
   /*
+#endif
 #if !NETSTANDARD1_3
     internal enum OSPlatform
     {
@@ -69,7 +71,9 @@ namespace Assimp.Unmanaged
         public static string OSDescription { get { return "Microsoft Windows"; } }
     }
 #endif
+#if !NET462
   */
+#endif
     //Helper class for making it easier to access certain reflection methods on types between .Net framework and .Net standard (pre-netstandard 2.0)
     internal class PlatformHelper
     {
